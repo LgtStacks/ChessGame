@@ -4,6 +4,7 @@ import java.awt.Point;
 public abstract class AbstractPiece implements PieceInterface {
 	private Point myPosition;
 	private Piece myPiece;
+	private boolean myIsWhite;
 	public AbstractPiece(Point thePosition, Piece thePiece, boolean isWhite) {
 		myPosition = thePosition;
 		myPiece = thePiece;
@@ -11,7 +12,9 @@ public abstract class AbstractPiece implements PieceInterface {
 	public Piece getPiece() {
 		return myPiece;
 	}
-	
+	public boolean isWhite() {
+		return myIsWhite;
+	}
 	public Point getPosition() {
 		return myPosition;
 	}

@@ -10,7 +10,7 @@ public class Bishop extends AbstractPiece {
 		myPosition = thePosition;
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	@Override
 	public boolean isValid(Point theDestination) {
 		if(theDestination.x < 0 || theDestination.y < 0 || theDestination.x > 7 || theDestination.y > 7) {//OOB
