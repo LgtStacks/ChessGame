@@ -102,7 +102,6 @@ public class Board {
         System.out.println(" ---------Black---------");
     }
 
-
     //THINGS TO ADD: Point system, Queen attack conditions, Pawn movement to include diagonals(FORWARD ONLY)
     public void attack(Point current, Point target) {
         AbstractPiece pieceInQuestion = myBoard[current.x][current.y];
@@ -156,14 +155,6 @@ public class Board {
                 }
             } else if (pieceInQuestion.getPiece() == Piece.QUEEN) {
                 if (!isDiagonalClear(current, destination) && !isStraightClear(current, destination)) {
-    public void move(Point current, Point destination) {
-        AbstractPiece pieceInQuestion = myBoard[current.x][current.y];
-        if (pieceInQuestion.isValid(destination) && isFree(destination)) {//if the piece can move there and the spot is open then move it
-            if (pieceInQuestion.getPiece() == Piece.BISHOP || pieceInQuestion.getPiece() == Piece.ROOK || pieceInQuestion.getPiece() == Piece.QUEEN) {
-                if (!isStraightClear(current, destination)) {
-                    throw new IllegalArgumentException();
-                } else if (!isDiagonalClear(current, destination)) {
-
                     throw new IllegalArgumentException();
                 }
             }
@@ -175,11 +166,7 @@ public class Board {
 
     private boolean isDiagonalClear(Point current, Point destination) {
         if ((current.x < destination.x)) {//Moving down
-
             for (int i = 1; i < destination.x - current.x; i++) {
-
-            for (int i = 1; i <= destination.x - current.x; i++) {
-
                 if (current.y < destination.y) {//Moving right
                     if (!isFree(new Point(current.x + i, current.y + i))) {
                         return false;
@@ -191,11 +178,7 @@ public class Board {
                 }
             }
         } else if ((current.x > destination.x)) {//Moving up
-
             for (int i = 1; i < current.x - destination.x; i++) {
-
-            for (int i = 1; i <= current.x - destination.x; i++) {
-
                 if (current.y < destination.y) {//Moving right
                     if (!isFree(new Point(current.x - i, current.y + i))) {
                         return false;
@@ -226,10 +209,7 @@ public class Board {
                     }
                 }
             }
-
             return true;
-
-
         } else if ((current.x == destination.x)) {//Moving horizontally
             if (current.y < destination.y) {//Moving right
                 for (int i = current.y; i < destination.y; i++) {
@@ -245,14 +225,9 @@ public class Board {
                     }
                 }
             }
-
             return true;
         }
         return false;
-
-        }
-        return true;
-
     }
 
     private void add(AbstractPiece thePiece) {
