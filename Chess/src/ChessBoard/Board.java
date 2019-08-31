@@ -34,7 +34,6 @@ public class Board {
         Pawn blackPawn7 = new Pawn(new Point(6, 6), false);
         Pawn blackPawn8 = new Pawn(new Point(6, 7), false);
 
-
         //Creating all White Pieces
         Rook whiteLRook = new Rook(new Point(0, 0), true);
         Knight whiteLKnight = new Knight(new Point(0, 1), true);
@@ -88,8 +87,6 @@ public class Board {
         add(whitePawn6);
         add(whitePawn7);
         add(whitePawn8);
-
-
     }
 
     public boolean isFree(Point inQuestion) {
@@ -105,6 +102,60 @@ public class Board {
         System.out.println(" ---------Black---------");
     }
 
+
+    //THINGS TO ADD: Point system, Queen attack conditions, Pawn movement to include diagonals(FORWARD ONLY)
+    public void attack(Point current, Point target) {
+        AbstractPiece pieceInQuestion = myBoard[current.x][current.y];
+        if (pieceInQuestion.isValid(target) && !isFree(target)) {//Piece can maneuver to the target and the target is occupied
+            if (Math.abs(current.x - target.x) == 1 || Math.abs(current.y - target.y) == 1) {//Attacks within one unit away
+                pieceInQuestion.move(target);
+                myBoard[current.x][current.y] = null;
+                myBoard[target.x][target.y] = pieceInQuestion;
+            } else if (pieceInQuestion.getPiece() == Piece.PAWN) {
+                if (Math.abs(current.x - target.x) == 1 && Math.abs(current.y - target.y) == 1) {
+                    pieceInQuestion.move(target);
+                    myBoard[current.x][current.y] = null;
+                    myBoard[target.x][target.y] = pieceInQuestion;
+                }
+            } else if (pieceInQuestion.getPiece() == Piece.ROOK) {
+                if (isStraightClear(current, target)) {
+                    pieceInQuestion.move(target);
+                    myBoard[current.x][current.y] = null;
+                    myBoard[target.x][target.y] = pieceInQuestion;
+                }
+            } else if (pieceInQuestion.getPiece() == Piece.BISHOP) {
+                if (isDiagonalClear(current, target)) {
+                    pieceInQuestion.move(target);
+                    myBoard[current.x][current.y] = null;
+                    myBoard[target.x][target.y] = pieceInQuestion;
+                }
+            } else if (pieceInQuestion.getPiece() == Piece.QUEEN) {
+                if (isDiagonalClear(current, target) || isStraightClear(current, target)) {
+                    pieceInQuestion.move(target);
+                    myBoard[current.x][current.y] = null;
+                    myBoard[target.x][target.y] = pieceInQuestion;
+                }
+            } else if (pieceInQuestion.getPiece() == Piece.KNIGHT) {
+                pieceInQuestion.move(target);
+                myBoard[current.x][current.y] = null;
+                myBoard[target.x][target.y] = pieceInQuestion;
+            }
+        }
+    }
+
+    public void move(Point current, Point destination) {
+        AbstractPiece pieceInQuestion = myBoard[current.x][current.y];
+        if (pieceInQuestion.isValid(destination) && isFree(destination)) {//if the piece can move there and the spot is open then move it
+            if (pieceInQuestion.getPiece() == Piece.ROOK) {
+                if (!isStraightClear(current, destination)) {
+                    throw new IllegalArgumentException();
+                }
+            } else if (pieceInQuestion.getPiece() == Piece.BISHOP) {
+                if (!isDiagonalClear(current, destination)) {
+                    throw new IllegalArgumentException();
+                }
+            } else if (pieceInQuestion.getPiece() == Piece.QUEEN) {
+                if (!isDiagonalClear(current, destination) && !isStraightClear(current, destination)) {
     public void move(Point current, Point destination) {
         AbstractPiece pieceInQuestion = myBoard[current.x][current.y];
         if (pieceInQuestion.isValid(destination) && isFree(destination)) {//if the piece can move there and the spot is open then move it
@@ -112,6 +163,7 @@ public class Board {
                 if (!isStraightClear(current, destination)) {
                     throw new IllegalArgumentException();
                 } else if (!isDiagonalClear(current, destination)) {
+
                     throw new IllegalArgumentException();
                 }
             }
@@ -123,7 +175,11 @@ public class Board {
 
     private boolean isDiagonalClear(Point current, Point destination) {
         if ((current.x < destination.x)) {//Moving down
+
+            for (int i = 1; i < destination.x - current.x; i++) {
+
             for (int i = 1; i <= destination.x - current.x; i++) {
+
                 if (current.y < destination.y) {//Moving right
                     if (!isFree(new Point(current.x + i, current.y + i))) {
                         return false;
@@ -135,7 +191,11 @@ public class Board {
                 }
             }
         } else if ((current.x > destination.x)) {//Moving up
+
+            for (int i = 1; i < current.x - destination.x; i++) {
+
             for (int i = 1; i <= current.x - destination.x; i++) {
+
                 if (current.y < destination.y) {//Moving right
                     if (!isFree(new Point(current.x - i, current.y + i))) {
                         return false;
@@ -166,6 +226,10 @@ public class Board {
                     }
                 }
             }
+
+            return true;
+
+
         } else if ((current.x == destination.x)) {//Moving horizontally
             if (current.y < destination.y) {//Moving right
                 for (int i = current.y; i < destination.y; i++) {
@@ -181,8 +245,14 @@ public class Board {
                     }
                 }
             }
+
+            return true;
+        }
+        return false;
+
         }
         return true;
+
     }
 
     private void add(AbstractPiece thePiece) {
