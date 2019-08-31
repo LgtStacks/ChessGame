@@ -14,7 +14,8 @@ public class Main {
 		System.out.println();
 		System.out.println();
 		testBoard.printBoard();
-		System.out.println("Just testing out if my commits are working");		
+		System.out.println("Just testing out if my commits are working");
+		System.out.println("Testing if the pull works");
 
 	}
 
