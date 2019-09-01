@@ -14,6 +14,7 @@ import pieces.Rook;
 /**
  * The Chess-Board in a game of Chess. 
  * @author Gobindroop Mann
+ * @author Colby Tong
  * @version 0.1
  */
 public class Board {
