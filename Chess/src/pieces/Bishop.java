@@ -39,4 +39,9 @@ public class Bishop extends AbstractPiece {
         return "B";
     }
 
+    @Override
+    public boolean canAttack(final Point theDestination) {
+        return isValid(theDestination);
+    }
+
 }

@@ -22,12 +22,10 @@ public final class Main {
     public static void main(final String[] theArgs) {
         final Board testBoard = new Board();
         testBoard.printBoard();
-        testBoard.move(new Point(0, 0), new Point(0, 2));
-        System.out.println();
-        System.out.println();
-        System.out.println();
+        testBoard.move(new Point(6, 0), new Point(4, 0));
         testBoard.printBoard();
-
+        testBoard.move(new Point(7, 0), new Point(5, 0));
+        testBoard.printBoard();
     }
 
 }

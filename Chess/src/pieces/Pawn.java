@@ -79,5 +79,21 @@ public class Pawn extends AbstractPiece {
     public String toString() {
         return "P";
     }
+    
+    @Override
+    public boolean canAttack(final Point theDestination) {
+        if (myIsWhite) {
+            if (theDestination.x - myPosition.x == 1
+                    && Math.abs(theDestination.y - myPosition.y) == 1) {
+                return true;
+            }
+        } else if (!myIsWhite) {
+            if (theDestination.x - myPosition.x == -1
+                    && Math.abs(theDestination.y - myPosition.y) == 1) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

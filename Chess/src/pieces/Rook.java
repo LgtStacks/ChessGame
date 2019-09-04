@@ -39,5 +39,9 @@ public class Rook extends AbstractPiece {
     public String toString() {
         return "R";
     }
+    @Override
+    public boolean canAttack(final Point theDestination) {
+        return isValid(theDestination);
+    }
 
 }

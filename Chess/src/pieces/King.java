@@ -39,4 +39,9 @@ public class King extends AbstractPiece {
         return "K";
     }
 
+    @Override
+    public boolean canAttack(final Point theDestination) {
+        return isValid(theDestination);
+    }
+
 }

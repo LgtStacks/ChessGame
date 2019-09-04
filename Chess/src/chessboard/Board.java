@@ -192,26 +192,29 @@ public class Board {
      */
     public void move(final Point theCurrent, final Point theDestination) {
         final AbstractPiece pieceInQuestion = myBoard[theCurrent.x][theCurrent.y];
+        final AbstractPiece attackedPiece = myBoard[theDestination.x][theDestination.y];
         if (pieceInQuestion.isValid(theDestination) 
                 && isFree(theDestination)) { // if the piece can move there and the spot is
                                                                            // open then move it
-            if (pieceInQuestion.getPiece() == Piece.ROOK) {
-                if (!isStraightClear(theCurrent, theDestination)) {
-                    throw new IllegalArgumentException();
-                }
-            } else if (pieceInQuestion.getPiece() == Piece.BISHOP) {
-                if (!isDiagonalClear(theCurrent, theDestination)) {
-                    throw new IllegalArgumentException();
-                }
-            } else if (pieceInQuestion.getPiece() == Piece.QUEEN) {
-                if (!isDiagonalClear(theCurrent, theDestination)
-                        && !isStraightClear(theCurrent, theDestination)) {
-                    throw new IllegalArgumentException();
-                }
-            }
+            pathClearanceChecker(theCurrent, theDestination);
+            
             pieceInQuestion.move(theDestination);
             myBoard[theCurrent.x][theCurrent.y] = null;
             myBoard[theDestination.x][theDestination.y] = pieceInQuestion;
+        } else if (pieceInQuestion.canAttack(theDestination) 
+                && !isFree(theDestination)) {
+               // && (attackedPiece.isWhite() != pieceInQuestion.isWhite())) {
+                                        //Can attack destination 
+                                        //and there is a piece there to attack
+                                        //and they are different colors
+            System.out.println("Attacking...");
+            pathClearanceChecker(theCurrent, theDestination);
+            pieceInQuestion.move(theDestination);
+            myBoard[theCurrent.x][theCurrent.y] = null;
+            myBoard[theDestination.x][theDestination.y] = pieceInQuestion;
+            myPiecesLeft--;
+        } else {
+            throw new IllegalArgumentException("This piece cannot move here");
         }
     }
 
@@ -261,14 +264,14 @@ public class Board {
     private boolean isStraightClear(final Point theCurrent, final Point theDestination) {
         if (theCurrent.y == theDestination.y) { // Moving vertically
             if (theCurrent.x > theDestination.x) { // Moving up
-                for (int i = theCurrent.x; i > theDestination.x; i--) {
+                for (int i = theCurrent.x; i > theDestination.x + 1; i--) {
                     if (!isFree(new Point(i + 1, theCurrent.y))) {
                         return false;
                     }
                 }
             }
             if (theCurrent.x < theDestination.x) { // Moving down
-                for (int i = theCurrent.x; i < theDestination.x; i++) {
+                for (int i = theCurrent.x; i < theDestination.x - 1; i++) {
                     if (!isFree(new Point(i + 1, theCurrent.y))) {
                         return false;
                     }
@@ -277,14 +280,14 @@ public class Board {
             return true;
         } else if (theCurrent.x == theDestination.x) { // Moving horizontally
             if (theCurrent.y < theDestination.y) { // Moving right
-                for (int i = theCurrent.y; i < theDestination.y; i++) {
+                for (int i = theCurrent.y; i < theDestination.y - 1; i++) {
                     if (!isFree(new Point(theCurrent.x, i + 1))) {
                         return false;
                     }
                 }
             }
             if (theCurrent.y > theDestination.y) { // Moving left
-                for (int i = theCurrent.y; i > theDestination.y; i--) {
+                for (int i = theCurrent.y; i > theDestination.y + 1; i--) {
                     if (!isFree(new Point(theCurrent.x, i - 1))) {
                         return false;
                     }
@@ -302,5 +305,30 @@ public class Board {
     private void add(final AbstractPiece thePiece) {
         myPiecesLeft++;
         myBoard[thePiece.getPosition().x][thePiece.getPosition().y] = thePiece;
+    }
+    /**
+     * Throws an error if the path to a destination is blocked.
+     * @param theCurrent Where the piece is starting
+     * @param theDestination The destination or where the piece is going.
+     */
+    private void pathClearanceChecker(final Point theCurrent, final Point theDestination) {
+        final AbstractPiece pieceInQuestion = myBoard[theCurrent.x][theCurrent.y];
+        if (pieceInQuestion.getPiece() == Piece.ROOK) {
+            if (!isStraightClear(theCurrent, theDestination)) {
+                throw new IllegalArgumentException("Straight path of rook is blocked");
+            }
+        } else if (pieceInQuestion.getPiece() == Piece.BISHOP) {
+            if (!isDiagonalClear(theCurrent, theDestination)) {
+                throw new IllegalArgumentException("Diagonal path of bishop is blocked");
+            }
+        } else if (pieceInQuestion.getPiece() == Piece.QUEEN) {
+            if ((theCurrent.x == theDestination.x //traveling straight
+                    || theCurrent.y == theDestination.y)
+                    && !isStraightClear(theCurrent, theDestination)) {
+                throw new IllegalArgumentException("Stright path of queen blocked");
+            } else if (!isDiagonalClear(theCurrent, theDestination)) {
+                throw new IllegalArgumentException("Diagonal path of queen blocked");
+            }
+        }
     }
 }

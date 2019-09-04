@@ -41,5 +41,9 @@ public class Knight extends AbstractPiece {
     public String toString() {
         return "N";
     }
+    @Override
+    public boolean canAttack(final Point theDestination) {
+        return isValid(theDestination);
+    }
 
 }

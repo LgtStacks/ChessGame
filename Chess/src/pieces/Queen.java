@@ -40,5 +40,9 @@ public class Queen extends AbstractPiece {
     public String toString() {
         return "Q";
     }
+    @Override
+    public boolean canAttack(final Point theDestination) {
+        return isValid(theDestination);
+    }
 
 }
