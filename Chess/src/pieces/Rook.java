@@ -43,5 +43,16 @@ public class Rook extends AbstractPiece {
     public boolean canAttack(final Point theDestination) {
         return isValid(theDestination);
     }
+    /**
+     * @return The position of the piece.
+     */
+    public Point getPosition() {
+        return myPosition;
+    }
+    @Override
+    public void move(final Point theDestination) {
+        myPosition = theDestination;
+    }
+    
 
 }

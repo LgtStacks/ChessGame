@@ -43,5 +43,10 @@ public class Bishop extends AbstractPiece {
     public boolean canAttack(final Point theDestination) {
         return isValid(theDestination);
     }
+    
+    @Override
+    public void move(final Point theDestination) {
+        myPosition = theDestination;
+    }
 
 }

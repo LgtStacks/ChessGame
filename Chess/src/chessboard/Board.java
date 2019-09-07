@@ -162,7 +162,8 @@ public class Board {
         if (pieceInQuestion.isValid(theTarget)
                 && !isFree(theTarget)) {
             if (Math.abs(theCurrent.x - theTarget.x) == 1
-                    || Math.abs(theCurrent.y - theTarget.y) == 1) { // Attacks within one unit away
+                    || Math.abs(theCurrent.y - theTarget.y) == 1) { 
+                // Attacks within one unit away
                 pieceInQuestion.move(theTarget);
                 myBoard[theCurrent.x][theCurrent.y] = null;
                 myBoard[theTarget.x][theTarget.y] = pieceInQuestion;
@@ -209,11 +210,6 @@ public class Board {
     public void move(final Point theCurrent, final Point theDestination) {
         final AbstractPiece pieceInQuestion = myBoard[theCurrent.x][theCurrent.y];
         final AbstractPiece attackedPiece = myBoard[theDestination.x][theDestination.y];
-        System.out.println("Piece in Question is at " + pieceInQuestion.getPosition());
-        System.out.println("Destination is at " + theDestination);
-        System.out.println("Piece at destination: " + attackedPiece);
-        System.out.println("Can the piece maneuver there? " + pieceInQuestion.isValid(theDestination));
-        System.out.println("Is the destination free? " + isFree(theDestination));
         if (pieceInQuestion.isValid(theDestination)
                 && isFree(theDestination)) { // if the piece can move there and the spot is
             // open then move it
