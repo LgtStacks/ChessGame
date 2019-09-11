@@ -19,7 +19,7 @@ public abstract class AbstractPiece implements PieceInterface {
      * @param theIsWhite Whether or not the piece is white.
      */
     public AbstractPiece(final Point thePosition, final Piece thePiece,
-            final boolean theIsWhite) {
+                         final boolean theIsWhite) {
         myPosition = thePosition;
         myPiece = thePiece;
     }

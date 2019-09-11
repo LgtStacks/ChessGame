@@ -20,23 +20,33 @@ public class Bishop extends AbstractPiece {
         super(thePosition, Piece.BISHOP, theIsWhite);
         myPosition = thePosition;
     }
-    
+
     @Override
     public boolean isValid(final Point theDestination) {
         if (theDestination.x < 0 || theDestination.y < 0
-            || theDestination.x > BOUNDSCHECK || theDestination.y > BOUNDSCHECK) { //OOB
+                || theDestination.x > BOUNDSCHECK || theDestination.y > BOUNDSCHECK) { //OOB
             return false;
         }
         if (Math.abs(theDestination.x - myPosition.x)
-            == Math.abs(theDestination.y - myPosition.y)) { //Moving diagonally
+                == Math.abs(theDestination.y - myPosition.y)) { //Moving diagonally
             return true;
         }
         return false;
     }
-    
+
     @Override
     public String toString() {
         return "B";
+    }
+
+    @Override
+    public boolean canAttack(final Point theDestination) {
+        return isValid(theDestination);
+    }
+
+    @Override
+    public void move(final Point theDestination) {
+        myPosition = theDestination;
     }
 
 }

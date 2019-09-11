@@ -1,13 +1,17 @@
 package pieces;
 
 import java.awt.Point;
+
 /**
  * The pawn piece in Chess.
+ *
  * @author Gobindroop Mann
  * @version 0.1
  */
 public class Pawn extends AbstractPiece {
-    /**The index size of the board.*/
+    /**
+     * The index size of the board.
+     */
     private static final int BOUNDSCHECK = 7;
     /***/
     private Point myPosition;
@@ -15,10 +19,12 @@ public class Pawn extends AbstractPiece {
     private int myMoveCount;
     /***/
     private boolean myIsWhite;
+
     /**
      * The constructor for the Pawn.
+     *
      * @param thePosition The starting location of the pawn.
-     * @param theIsWhite Whether the pawn is white or black.
+     * @param theIsWhite  Whether the pawn is white or black.
      */
     public Pawn(final Point thePosition, final boolean theIsWhite) {
         super(thePosition, Piece.PAWN, theIsWhite);
@@ -26,8 +32,10 @@ public class Pawn extends AbstractPiece {
         myPosition = thePosition;
         myMoveCount = 0;
     }
+
     /**
      * Helper method to check if the pawn move is valid.
+     *
      * @param theDestination Where the pawn is trying to move
      * @return Whether it is valid or not for the pawn to move there.
      */
@@ -41,7 +49,7 @@ public class Pawn extends AbstractPiece {
         }
         return true;
     }
-    
+
 
     @Override
     public void move(final Point theDestination) {
@@ -72,12 +80,28 @@ public class Pawn extends AbstractPiece {
             }
         }
         return flag;
-        
+
     }
-    
+
     @Override
     public String toString() {
         return "P";
+    }
+
+    @Override
+    public boolean canAttack(final Point theDestination) {
+        if (myIsWhite) {
+            if (theDestination.x - myPosition.x == 1
+                    && Math.abs(theDestination.y - myPosition.y) == 1) {
+                return true;
+            }
+        } else if (!myIsWhite) {
+            if (theDestination.x - myPosition.x == -1
+                    && Math.abs(theDestination.y - myPosition.y) == 1) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
