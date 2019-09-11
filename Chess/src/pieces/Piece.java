@@ -1,45 +1,77 @@
 package pieces;
+
 /**
  * An enum to represent the different pieces in chess.
+ *
  * @author Gobindroop Mann
  * @version 0.1
  */
 public enum Piece {
-    /**The King.*/
+    /**
+     * The King.
+     */
     KING('K'),
-    /**The Queen.*/
+    /**
+     * The Queen.
+     */
     QUEEN('Q'),
-    /**The Bishop.*/
+    /**
+     * The Bishop.
+     */
     BISHOP('B'),
-    /**The Knight.*/
+    /**
+     * The Knight.
+     */
     KNIGHT('N'),
-    /**The Rook.*/
+    /**
+     * The Rook.
+     */
     ROOK('R'),
-    /**The Pawn.*/
+    /**
+     * The Pawn.
+     */
     PAWN('P');
-    /**The value of a King.*/
+    /**
+     * The value of a King.
+     */
     private static final int KINGVALUE = 99;
-    /**The value of a Queen.*/
+    /**
+     * The value of a Queen.
+     */
     private static final int QUEENVALUE = 9;
-    /**The value of a Bishop.*/
+    /**
+     * The value of a Bishop.
+     */
     private static final int BISHOPVALUE = 3;
-    /**The value of a Knight.*/
+    /**
+     * The value of a Knight.
+     */
     private static final int KNIGHTVALUE = 3;
-    /**The value of a Rook.*/
+    /**
+     * The value of a Rook.
+     */
     private static final int ROOKVALUE = 5;
-    /**The value of a Pawn.*/
+    /**
+     * The value of a Pawn.
+     */
     private static final int PAWNVALUE = 1;
-    /**The chosen letter.*/
+    /**
+     * The chosen letter.
+     */
     private char myLetter;
+
     /**
      * The constructor for a Piece.
+     *
      * @param theLetter The letter chosen.
      */
     Piece(final char theLetter) {
         myLetter = theLetter;
     }
+
     /**
      * Returns the value of the Piece.
+     *
      * @return The values of the Piece.
      */
     public int getValue() {

@@ -14,7 +14,6 @@ import pieces.Rook;
 
 /**
  * The Chess-Board in a game of Chess.
- *
  * @author Gobindroop Mann
  * @author Colby Tong
  * @version 0.1
@@ -147,9 +146,6 @@ public class Board {
                 ("[[", "[").replace("]]", "]").replace("null", " ").replace(",", "|"));
         System.out.println(" ---------Black---------");
     }
-
-    // THINGS TO ADD: Point system, Pawn movement to
-    // include diagonals(FORWARD ONLY)
 
     /**
      * Moves the piece at the current location to the target location.
