@@ -104,20 +104,4 @@ public class Pawn extends AbstractPiece {
         return false;
     }
 
-    @Override
-    public boolean canAttack(final Point theDestination) {
-        if (myIsWhite) {
-            if (theDestination.x - myPosition.x == 1
-                    && Math.abs(theDestination.y - myPosition.y) == 1) {
-                return true;
-            }
-        } else if (!myIsWhite) {
-            if (theDestination.x - myPosition.x == -1
-                    && Math.abs(theDestination.y - myPosition.y) == 1) {
-                return true;
-            }
-        }
-        return false;
-    }
-
 }

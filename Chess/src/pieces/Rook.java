@@ -24,7 +24,10 @@ public class Rook extends AbstractPiece {
         myPosition = thePosition;
         myMoveCount = 0;
     }
-
+    /**
+     * Returns the amount of moves the rook has made.
+     * @return The amount of moves the rook has made.
+     */
     public int moveCount() {
         return myMoveCount;
     }

@@ -58,14 +58,4 @@ public class Queen extends AbstractPiece {
         myPosition = theDestination;
     }
 
-    @Override
-    public boolean canAttack(final Point theDestination) {
-        return isValid(theDestination);
-    }
-
-    @Override
-    public void move(final Point theDestination) {
-        myPosition = theDestination;
-    }
-
 }
