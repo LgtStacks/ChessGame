@@ -14,9 +14,8 @@ import pieces.Rook;
 
 /**
  * The Chess-Board in a game of Chess.
- *
- * @author Colby Tong
  * @author Gobindroop Mann
+ * @author Colby Tong
  * @version 0.1
  */
 public class Board {
@@ -146,59 +145,6 @@ public class Board {
                 ("], ", "]\n------------------------\n").replace
                 ("[[", "[").replace("]]", "]").replace("null", " ").replace(",", "|"));
         System.out.println(" ---------Black---------");
-    }
-
-    // THINGS TO ADD: Point system, Queen attack conditions, Pawn movement to
-    // include diagonals(FORWARD ONLY)
-
-    /**
-     * Moves a piece at the current location and attacks the piece at the target location.
-     *
-     * @param theCurrent The space where the piece of interest is currently located
-     * @param theTarget  The space where the piece of interest is attacking
-     */
-    public void attack(final Point theCurrent, final Point theTarget) {
-        final AbstractPiece pieceInQuestion = myBoard[theCurrent.x][theCurrent.y];
-        if (pieceInQuestion.isValid(theTarget)
-                && !isFree(theTarget)) {
-            if (Math.abs(theCurrent.x - theTarget.x) == 1
-                    || Math.abs(theCurrent.y - theTarget.y) == 1) {
-                // Attacks within one unit away
-                pieceInQuestion.move(theTarget);
-                myBoard[theCurrent.x][theCurrent.y] = null;
-                myBoard[theTarget.x][theTarget.y] = pieceInQuestion;
-            } else if (pieceInQuestion.getPiece() == Piece.PAWN) {
-                if (Math.abs(theCurrent.x - theTarget.x) == 1
-                        && Math.abs(theCurrent.y - theTarget.y) == 1) {
-                    pieceInQuestion.move(theTarget);
-                    myBoard[theCurrent.x][theCurrent.y] = null;
-                    myBoard[theTarget.x][theTarget.y] = pieceInQuestion;
-                }
-            } else if (pieceInQuestion.getPiece() == Piece.ROOK) {
-                if (isStraightClear(theCurrent, theTarget)) {
-                    pieceInQuestion.move(theTarget);
-                    myBoard[theCurrent.x][theCurrent.y] = null;
-                    myBoard[theTarget.x][theTarget.y] = pieceInQuestion;
-                }
-            } else if (pieceInQuestion.getPiece() == Piece.BISHOP) {
-                if (isDiagonalClear(theCurrent, theTarget)) {
-                    pieceInQuestion.move(theTarget);
-                    myBoard[theCurrent.x][theCurrent.y] = null;
-                    myBoard[theTarget.x][theTarget.y] = pieceInQuestion;
-                }
-            } else if (pieceInQuestion.getPiece() == Piece.QUEEN) {
-                if (isDiagonalClear(theCurrent, theTarget)
-                        || isStraightClear(theCurrent, theTarget)) {
-                    pieceInQuestion.move(theTarget);
-                    myBoard[theCurrent.x][theCurrent.y] = null;
-                    myBoard[theTarget.x][theTarget.y] = pieceInQuestion;
-                }
-            } else if (pieceInQuestion.getPiece() == Piece.KNIGHT) {
-                pieceInQuestion.move(theTarget);
-                myBoard[theCurrent.x][theCurrent.y] = null;
-                myBoard[theTarget.x][theTarget.y] = pieceInQuestion;
-            }
-        }
     }
 
     /**

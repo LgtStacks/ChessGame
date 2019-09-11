@@ -40,9 +40,10 @@ public interface PieceInterface {
 
     /**
      * Returns if the piece can attack a certain spot.
-     *
      * @param theDestination Where the piece is trying to attack
      * @return If the piece can attack there
      */
     boolean canAttack(Point theDestination);
+
 }
+

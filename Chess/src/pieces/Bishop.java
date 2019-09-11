@@ -49,4 +49,6 @@ public class Bishop extends AbstractPiece {
         myPosition = theDestination;
     }
 
+
 }
+
