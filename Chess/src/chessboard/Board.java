@@ -148,58 +148,8 @@ public class Board {
         System.out.println(" ---------Black---------");
     }
 
-    // THINGS TO ADD: Point system, Queen attack conditions, Pawn movement to
+    // THINGS TO ADD: Point system, Pawn movement to
     // include diagonals(FORWARD ONLY)
-
-    /**
-     * Moves a piece at the current location and attacks the piece at the target location.
-     *
-     * @param theCurrent The space where the piece of interest is currently located
-     * @param theTarget  The space where the piece of interest is attacking
-     */
-    public void attack(final Point theCurrent, final Point theTarget) {
-        final AbstractPiece pieceInQuestion = myBoard[theCurrent.x][theCurrent.y];
-        if (pieceInQuestion.isValid(theTarget)
-                && !isFree(theTarget)) {
-            if (Math.abs(theCurrent.x - theTarget.x) == 1
-                    || Math.abs(theCurrent.y - theTarget.y) == 1) { 
-                // Attacks within one unit away
-                pieceInQuestion.move(theTarget);
-                myBoard[theCurrent.x][theCurrent.y] = null;
-                myBoard[theTarget.x][theTarget.y] = pieceInQuestion;
-            } else if (pieceInQuestion.getPiece() == Piece.PAWN) {
-                if (Math.abs(theCurrent.x - theTarget.x) == 1
-                        && Math.abs(theCurrent.y - theTarget.y) == 1) {
-                    pieceInQuestion.move(theTarget);
-                    myBoard[theCurrent.x][theCurrent.y] = null;
-                    myBoard[theTarget.x][theTarget.y] = pieceInQuestion;
-                }
-            } else if (pieceInQuestion.getPiece() == Piece.ROOK) {
-                if (isStraightClear(theCurrent, theTarget)) {
-                    pieceInQuestion.move(theTarget);
-                    myBoard[theCurrent.x][theCurrent.y] = null;
-                    myBoard[theTarget.x][theTarget.y] = pieceInQuestion;
-                }
-            } else if (pieceInQuestion.getPiece() == Piece.BISHOP) {
-                if (isDiagonalClear(theCurrent, theTarget)) {
-                    pieceInQuestion.move(theTarget);
-                    myBoard[theCurrent.x][theCurrent.y] = null;
-                    myBoard[theTarget.x][theTarget.y] = pieceInQuestion;
-                }
-            } else if (pieceInQuestion.getPiece() == Piece.QUEEN) {
-                if (isDiagonalClear(theCurrent, theTarget)
-                        || isStraightClear(theCurrent, theTarget)) {
-                    pieceInQuestion.move(theTarget);
-                    myBoard[theCurrent.x][theCurrent.y] = null;
-                    myBoard[theTarget.x][theTarget.y] = pieceInQuestion;
-                }
-            } else if (pieceInQuestion.getPiece() == Piece.KNIGHT) {
-                pieceInQuestion.move(theTarget);
-                myBoard[theCurrent.x][theCurrent.y] = null;
-                myBoard[theTarget.x][theTarget.y] = pieceInQuestion;
-            }
-        }
-    }
 
     /**
      * Moves the piece at the current location to the target location.
@@ -210,7 +160,12 @@ public class Board {
     public void move(final Point theCurrent, final Point theDestination) {
         final AbstractPiece pieceInQuestion = myBoard[theCurrent.x][theCurrent.y];
         final AbstractPiece attackedPiece = myBoard[theDestination.x][theDestination.y];
-        if (pieceInQuestion.isValid(theDestination)
+        System.out.println("Can the piece maneuver to the destination: " + pieceInQuestion.isValid(theDestination));
+        System.out.println("Is the destination free: " + isFree(theDestination));
+        if (pieceInQuestion.getPiece() == Piece.KING && theCurrent.y - theDestination.y == 2) {
+            //Piece is a king and destination is two Y to the left
+            castle(theCurrent, theDestination);
+        } else if (pieceInQuestion.isValid(theDestination)
                 && isFree(theDestination)) { // if the piece can move there and the spot is
             // open then move it
             pathClearanceChecker(theCurrent, theDestination);
@@ -219,8 +174,8 @@ public class Board {
             myBoard[theCurrent.x][theCurrent.y] = null;
             myBoard[theDestination.x][theDestination.y] = pieceInQuestion;
         } else if (pieceInQuestion.canAttack(theDestination)
-                && !isFree(theDestination)) {
-            // && (attackedPiece.isWhite() != pieceInQuestion.isWhite())) {
+                && !isFree(theDestination)
+                && (attackedPiece.isWhite() != pieceInQuestion.isWhite())) {
             //Can attack destination
             //and there is a piece there to attack
             //and they are different colors
@@ -280,7 +235,7 @@ public class Board {
      * @return A boolean returning whether or not the path is clear
      * between current and destination.
      */
-    private boolean isStraightClear(final Point theCurrent, final Point theDestination) {
+    /*private boolean isStraightClear(final Point theCurrent, final Point theDestination) {
         if (theCurrent.y == theDestination.y) { // Moving vertically
             if (theCurrent.x > theDestination.x) { // Moving up
                 for (int i = theCurrent.x; i > theDestination.x + 1; i--) {
@@ -309,6 +264,24 @@ public class Board {
                     if (!isFree(new Point(theCurrent.x, i - 1))) {
                         return false;
                     }
+                }
+            }
+        }
+        return true;
+    }*/
+    private boolean isStraightClear(final Point theCurrent, final Point theDestination){
+        if (theCurrent.y == theDestination.y) { // Moving vertically
+            for (int i = 1; i < Math.abs(theCurrent.x - theDestination.x); i++) {
+                if ((theCurrent.x > theDestination.x && !isFree(new Point(theCurrent.x - i, theCurrent.y)))
+                        || (theCurrent.x < theDestination.x && !isFree(new Point(theCurrent.x + i, theCurrent.y)))) {
+                    return false;
+                }
+            }
+        } else if (theCurrent.x == theDestination.x) { // Moving horizontally
+            for (int i = 1; i < Math.abs(theCurrent.y - theDestination.y); i++) {
+                if ((theCurrent.y > theDestination.y && !isFree(new Point(theCurrent.x, theCurrent.y - i)))
+                        || (theCurrent.y < theDestination.y && !isFree(new Point(theCurrent.x, theCurrent.y + i)))) {
+                    return false;
                 }
             }
         }
@@ -348,6 +321,32 @@ public class Board {
                 throw new IllegalArgumentException("Stright path of queen blocked");
             } else if (!isDiagonalClear(theCurrent, theDestination)) {
                 throw new IllegalArgumentException("Diagonal path of queen blocked");
+            }
+        }
+    }
+    /**
+     * Performs castle if possible, does nothing otherwise
+     * Assumes Piece is a King and the destination is > 1 unit away
+     * @param theCurrent     Where the piece is starting
+     * @param theDestination The destination or where the piece is going.
+     */
+    private void castle (final Point theCurrent, final Point theDestination) {
+        final AbstractPiece kingInQuestion = myBoard[theCurrent.x][theCurrent.y];
+        if (kingInQuestion.isValid(theDestination) && isFree(theDestination)) {
+            // Destination is a castling spot, king has not moved yet, and the destination is open
+            final Point rookDestination = new Point(theCurrent.x, theCurrent.y - 1);
+            final AbstractPiece rookInQuestion = myBoard[theCurrent.x][0];
+            if (rookInQuestion != null) {
+                if (rookInQuestion.isValid(rookDestination) && isFree(rookDestination)) {
+                    // Rook has valid castling destination, rook has not moved yet, and its destination is open
+                    System.out.println("Castling...");
+                    kingInQuestion.move(theDestination);
+                    myBoard[theCurrent.x][theCurrent.y] = null;
+                    myBoard[theDestination.x][theDestination.y] = kingInQuestion;
+                    rookInQuestion.move(rookDestination);
+                    myBoard[theCurrent.x][0] = null;
+                    myBoard[rookDestination.x][rookDestination.y] = rookInQuestion;
+                }
             }
         }
     }
