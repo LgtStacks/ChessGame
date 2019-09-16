@@ -22,6 +22,7 @@ public abstract class AbstractPiece implements PieceInterface {
                          final boolean theIsWhite) {
         myPosition = thePosition;
         myPiece = thePiece;
+        myIsWhite = theIsWhite;
     }
     /**
      * Getter for the type of piece.
@@ -36,6 +37,15 @@ public abstract class AbstractPiece implements PieceInterface {
      */
     public boolean isWhite() {
         return myIsWhite;
+    }
+    
+    public String getColor() {
+    	if(myIsWhite) {
+    		return "W";
+    	} else {
+    		return "B";
+    	}
+    	
     }
     /**
      * @return The position of the piece.

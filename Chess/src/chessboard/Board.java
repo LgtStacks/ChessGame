@@ -135,6 +135,10 @@ public class Board {
         }
         return false;
     }
+    
+    public AbstractPiece getPiece(final Point thePoint) {
+    	return myBoard[thePoint.x][thePoint.y];
+    }
 
     /**
      * Prints out the board.
@@ -153,12 +157,9 @@ public class Board {
      * @param theCurrent     The current location of the piece of interest
      * @param theDestination The destination of the piece of interest
      */
-    public void move(final Point theCurrent, final Point theDestination) {
+    public void move(final Point theCurrent, final Point theDestination) throws IllegalArgumentException {
         final AbstractPiece pieceInQuestion = myBoard[theCurrent.x][theCurrent.y];
         final AbstractPiece attackedPiece = myBoard[theDestination.x][theDestination.y];
-        System.out.println("Can the piece maneuver to the destination: "
-            + pieceInQuestion.isValid(theDestination));
-        System.out.println("Is the destination free: " + isFree(theDestination));
         if (pieceInQuestion.getPiece() == Piece.KING && theCurrent.y - theDestination.y == 2) {
             //Piece is a king and destination is two Y to the left
             castle(theCurrent, theDestination);
@@ -271,7 +272,7 @@ public class Board {
      * @param theCurrent     Where the piece is starting
      * @param theDestination The destination or where the piece is going.
      */
-    private void pathClearanceChecker(final Point theCurrent, final Point theDestination) {
+    private void pathClearanceChecker(final Point theCurrent, final Point theDestination) throws IllegalArgumentException {
         final AbstractPiece pieceInQuestion = myBoard[theCurrent.x][theCurrent.y];
         if (pieceInQuestion.getPiece() == Piece.ROOK) {
             if (!isStraightClear(theCurrent, theDestination)) {
