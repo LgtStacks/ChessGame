@@ -29,7 +29,6 @@ public class King extends AbstractPiece {
     public King(final Point thePosition, final boolean theIsWhite) {
         super(thePosition, Piece.KING, theIsWhite);
         myPosition = thePosition;
-        myMoveCount = 0;
     }
 
     @Override
@@ -37,8 +36,8 @@ public class King extends AbstractPiece {
         if (theDestination.x < 0 || theDestination.y < 0
                 || theDestination.x > BOUNDSCHECK || theDestination.y > BOUNDSCHECK) { //OOB
             return false;
-        } else if (myPosition.y - theDestination.y == 2) {
-            //Castling destination is two Y to the left
+        } else if (Math.abs(myPosition.y - theDestination.y) == 2) {
+            //Castling destination is two Y to either side
             if (myPosition.x != theDestination.x || myMoveCount != 0) {
                 //Destination is on same row and King has not moved yet
                 return false;

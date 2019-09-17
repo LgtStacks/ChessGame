@@ -14,8 +14,8 @@ import pieces.Rook;
 
 /**
  * The Chess-Board in a game of Chess.
- * @author Gobindroop Mann
  * @author Colby Tong
+ * @author Gobindroop Mann
  * @version 0.1
  */
 public class Board {
@@ -160,8 +160,8 @@ public class Board {
     public void move(final Point theCurrent, final Point theDestination) throws IllegalArgumentException {
         final AbstractPiece pieceInQuestion = myBoard[theCurrent.x][theCurrent.y];
         final AbstractPiece attackedPiece = myBoard[theDestination.x][theDestination.y];
-        if (pieceInQuestion.getPiece() == Piece.KING && theCurrent.y - theDestination.y == 2) {
-            //Piece is a king and destination is two Y to the left
+        if (pieceInQuestion.getPiece() == Piece.KING && Math.abs(theCurrent.y - theDestination.y) == 2) {
+            //Piece is a king and destination is two Y in either direction
             castle(theCurrent, theDestination);
         } else if (pieceInQuestion.isValid(theDestination)
                 && isFree(theDestination)) { // if the piece can move there and the spot is
@@ -300,11 +300,17 @@ public class Board {
      */
     private void castle(final Point theCurrent, final Point theDestination) {
         final AbstractPiece kingInQuestion = myBoard[theCurrent.x][theCurrent.y];
+        boolean kingSide = true;
         if (kingInQuestion.isValid(theDestination) && isFree(theDestination)) {
          // Destination is a castling spot, king has not moved yet, and the destination is open
-            final Point rookDestination = new Point(theCurrent.x, theCurrent.y - 1);
-            final AbstractPiece rookInQuestion = myBoard[theCurrent.x][0];
-            if (rookInQuestion != null) {
+            Point rookDestination = new Point(theCurrent.x, theCurrent.y - 1);
+            AbstractPiece rookInQuestion = myBoard[theCurrent.x][0];
+            if (theDestination.y > theCurrent.y) { //Changes values for queen castle
+                kingSide = false;
+                rookDestination = new Point(theCurrent.x, theCurrent.y + 1);
+                rookInQuestion = myBoard[theCurrent.x][7];
+            }
+            if (rookInQuestion != null && rookInQuestion.moveCount() == 0) {
                 if (rookInQuestion.isValid(rookDestination) && isFree(rookDestination)) {
     // Rook has valid castling destination, rook has not moved yet, and its destination is open
                     System.out.println("Castling...");
@@ -312,7 +318,11 @@ public class Board {
                     myBoard[theCurrent.x][theCurrent.y] = null;
                     myBoard[theDestination.x][theDestination.y] = kingInQuestion;
                     rookInQuestion.move(rookDestination);
-                    myBoard[theCurrent.x][0] = null;
+                    if (kingSide) {
+                        myBoard[theCurrent.x][0] = null;
+                    } else {
+                        myBoard[theCurrent.x][7] = null;
+                    }
                     myBoard[rookDestination.x][rookDestination.y] = rookInQuestion;
                 }
             }

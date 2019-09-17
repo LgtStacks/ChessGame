@@ -22,12 +22,12 @@ public class Rook extends AbstractPiece {
     public Rook(final Point thePosition, final boolean theIsWhite) {
         super(thePosition, Piece.ROOK, theIsWhite);
         myPosition = thePosition;
-        myMoveCount = 0;
     }
     /**
      * Returns the amount of moves the rook has made.
      * @return The amount of moves the rook has made.
      */
+    @Override
     public int moveCount() {
         return myMoveCount;
     }
@@ -37,11 +37,6 @@ public class Rook extends AbstractPiece {
         if (theDestination.x < 0 || theDestination.y < 0
                 || theDestination.x > BOUNDSCHECK || theDestination.y > BOUNDSCHECK) { //OOB
             return false;
-        } else if ((theDestination.x == myPosition.x)
-                && (theDestination.y - myPosition.y == 2)) { //Castling
-            if (myMoveCount == 0) { //Rook has not moved yet
-                return true;
-            }
         } else if ((theDestination.x == myPosition.x)
                 || (theDestination.y == myPosition.y)) { //Moving straight
             return true;
