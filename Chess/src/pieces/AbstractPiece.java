@@ -2,8 +2,8 @@ package pieces;
 import java.awt.Point;
 /**
  * An abstract Chess piece.
- * @author Colby Tong
  * @author Gobindroop Mann
+ * @author Colby Tong
  * @version 0.1
  */
 public abstract class AbstractPiece implements PieceInterface {

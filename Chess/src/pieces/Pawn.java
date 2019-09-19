@@ -4,8 +4,8 @@ import java.awt.Point;
 
 /**
  * The pawn piece in Chess.
- * @author Colby Tong
  * @author Gobindroop Mann
+ * @author Colby Tong
  * @version 0.1
  */
 public class Pawn extends AbstractPiece {
