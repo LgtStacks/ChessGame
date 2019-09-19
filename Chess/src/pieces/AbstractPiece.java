@@ -2,6 +2,7 @@ package pieces;
 import java.awt.Point;
 /**
  * An abstract Chess piece.
+ * @author Colby Tong
  * @author Gobindroop Mann
  * @version 0.1
  */
@@ -10,6 +11,8 @@ public abstract class AbstractPiece implements PieceInterface {
     private Point myPosition;
     /**The current type of the piece.*/
     private Piece myPiece;
+    /**The current move count of the piece.*/
+    private int myMoveCount;
     /**Whether the piece is currently white or not.*/
     private boolean myIsWhite;
     /**
@@ -23,6 +26,7 @@ public abstract class AbstractPiece implements PieceInterface {
         myPosition = thePosition;
         myPiece = thePiece;
         myIsWhite = theIsWhite;
+        myMoveCount = 0;
     }
     /**
      * Getter for the type of piece.
@@ -58,6 +62,13 @@ public abstract class AbstractPiece implements PieceInterface {
      */
     public int getValue() {
         return myPiece.getValue();
+    }
+    /**
+     * Returns the amount of moves the piece has made.
+     * @return The amount of moves the piece has made.
+     */
+    public int moveCount() {
+        return myMoveCount;
     }
     /**
      * Moves the piece to the destination provided.

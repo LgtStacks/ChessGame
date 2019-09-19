@@ -1,5 +1,6 @@
 package controller;
 
+import chessboard.Board;
 import view.ChessView;
 
 import java.awt.EventQueue;

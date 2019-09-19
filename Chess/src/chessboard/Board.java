@@ -14,8 +14,8 @@ import pieces.Rook;
 
 /**
  * The Chess-Board in a game of Chess.
- * @author Gobindroop Mann
  * @author Colby Tong
+ * @author Gobindroop Mann
  * @version 0.1
  */
 public class Board {
@@ -31,7 +31,7 @@ public class Board {
      * The amount of pieces left on the board.
      */
     private int myPiecesLeft;
-    /** True if is whites turn. */
+    /** True if it is whites turn in the game */
     private boolean myIsWhiteTurn;
 
     /**
@@ -164,20 +164,20 @@ public class Board {
         final AbstractPiece pieceInQuestion = myBoard[theCurrent.x][theCurrent.y];
         final AbstractPiece attackedPiece = myBoard[theDestination.x][theDestination.y];
         if(pieceInQuestion.isWhite() && !myIsWhiteTurn) {
-        	throw new IllegalArgumentException("It is Black's turn.");
+        	throw new IllegalArgumentException("It is Black's turn ");
         }
         if(!pieceInQuestion.isWhite() && myIsWhiteTurn) {
-        	throw new IllegalArgumentException("It is White's turn.");
+        	throw new IllegalArgumentException("It is White's turn ");
         }
-        if (pieceInQuestion.getPiece() == Piece.KING && theCurrent.y - theDestination.y == 2) {
-            //Piece is a king and destination is two Y to the left
+        if (pieceInQuestion.getPiece() == Piece.KING && Math.abs(theCurrent.y - theDestination.y) == 2) {
+            //Piece is a king and destination is two Y in either direction
             castle(theCurrent, theDestination);
         } else if (pieceInQuestion.isValid(theDestination)
                 && isFree(theDestination)) { // if the piece can move there and the spot is
             // open then move it
             pathClearanceChecker(theCurrent, theDestination);
-            myIsWhiteTurn = !myIsWhiteTurn;
             System.out.println("Moving...");
+            myIsWhiteTurn = !myIsWhiteTurn;
             pieceInQuestion.move(theDestination);
             myBoard[theCurrent.x][theCurrent.y] = null;
             myBoard[theDestination.x][theDestination.y] = pieceInQuestion;
@@ -297,7 +297,7 @@ public class Board {
             if ((theCurrent.x == theDestination.x //traveling straight
                     || theCurrent.y == theDestination.y)
                     && !isStraightClear(theCurrent, theDestination)) {
-                throw new IllegalArgumentException("Straight path of queen blocked");
+                throw new IllegalArgumentException("Stright path of queen blocked");
             } else if (!isDiagonalClear(theCurrent, theDestination)) {
                 throw new IllegalArgumentException("Diagonal path of queen blocked");
             }
@@ -311,11 +311,17 @@ public class Board {
      */
     private void castle(final Point theCurrent, final Point theDestination) {
         final AbstractPiece kingInQuestion = myBoard[theCurrent.x][theCurrent.y];
+        boolean kingSide = true;
         if (kingInQuestion.isValid(theDestination) && isFree(theDestination)) {
          // Destination is a castling spot, king has not moved yet, and the destination is open
-            final Point rookDestination = new Point(theCurrent.x, theCurrent.y - 1);
-            final AbstractPiece rookInQuestion = myBoard[theCurrent.x][0];
-            if (rookInQuestion != null) {
+            Point rookDestination = new Point(theCurrent.x, theCurrent.y - 1);
+            AbstractPiece rookInQuestion = myBoard[theCurrent.x][0];
+            if (theDestination.y > theCurrent.y) { //Changes values for queen castle
+                kingSide = false;
+                rookDestination = new Point(theCurrent.x, theCurrent.y + 1);
+                rookInQuestion = myBoard[theCurrent.x][7];
+            }
+            if (rookInQuestion != null && rookInQuestion.moveCount() == 0) {
                 if (rookInQuestion.isValid(rookDestination) && isFree(rookDestination)) {
     // Rook has valid castling destination, rook has not moved yet, and its destination is open
                     System.out.println("Castling...");
@@ -323,7 +329,11 @@ public class Board {
                     myBoard[theCurrent.x][theCurrent.y] = null;
                     myBoard[theDestination.x][theDestination.y] = kingInQuestion;
                     rookInQuestion.move(rookDestination);
-                    myBoard[theCurrent.x][0] = null;
+                    if (kingSide) {
+                        myBoard[theCurrent.x][0] = null;
+                    } else {
+                        myBoard[theCurrent.x][7] = null;
+                    }
                     myBoard[rookDestination.x][rookDestination.y] = rookInQuestion;
                 }
             }
