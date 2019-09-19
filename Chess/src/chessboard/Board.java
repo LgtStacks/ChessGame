@@ -31,11 +31,14 @@ public class Board {
      * The amount of pieces left on the board.
      */
     private int myPiecesLeft;
+    /** True if is whites turn. */
+    private boolean myIsWhiteTurn;
 
     /**
      * The constructor for a board.
      */
     public Board() {
+    	myIsWhiteTurn = true;
         myBoard = new AbstractPiece[BOARDSIZE][BOARDSIZE];
         myPiecesLeft = 0;
         setupBlack();
@@ -160,6 +163,12 @@ public class Board {
     public void move(final Point theCurrent, final Point theDestination) throws IllegalArgumentException {
         final AbstractPiece pieceInQuestion = myBoard[theCurrent.x][theCurrent.y];
         final AbstractPiece attackedPiece = myBoard[theDestination.x][theDestination.y];
+        if(pieceInQuestion.isWhite() && !myIsWhiteTurn) {
+        	throw new IllegalArgumentException("It is Black's turn.");
+        }
+        if(!pieceInQuestion.isWhite() && myIsWhiteTurn) {
+        	throw new IllegalArgumentException("It is White's turn.");
+        }
         if (pieceInQuestion.getPiece() == Piece.KING && theCurrent.y - theDestination.y == 2) {
             //Piece is a king and destination is two Y to the left
             castle(theCurrent, theDestination);
@@ -167,6 +176,7 @@ public class Board {
                 && isFree(theDestination)) { // if the piece can move there and the spot is
             // open then move it
             pathClearanceChecker(theCurrent, theDestination);
+            myIsWhiteTurn = !myIsWhiteTurn;
             System.out.println("Moving...");
             pieceInQuestion.move(theDestination);
             myBoard[theCurrent.x][theCurrent.y] = null;
@@ -178,6 +188,7 @@ public class Board {
             //and there is a piece there to attack
             //and they are different colors
             System.out.println("Attacking...");
+            myIsWhiteTurn = !myIsWhiteTurn;
             pathClearanceChecker(theCurrent, theDestination);
             pieceInQuestion.move(theDestination);
             myBoard[theCurrent.x][theCurrent.y] = null;
@@ -286,7 +297,7 @@ public class Board {
             if ((theCurrent.x == theDestination.x //traveling straight
                     || theCurrent.y == theDestination.y)
                     && !isStraightClear(theCurrent, theDestination)) {
-                throw new IllegalArgumentException("Stright path of queen blocked");
+                throw new IllegalArgumentException("Straight path of queen blocked");
             } else if (!isDiagonalClear(theCurrent, theDestination)) {
                 throw new IllegalArgumentException("Diagonal path of queen blocked");
             }

@@ -3,8 +3,8 @@ package pieces;
 import java.awt.Point;
 /**
  * The rook piece in chess.
- * @author Colby Tong
  * @author Gobindroop Mann
+ * @author Colby Tong
  * @version 0.1
  */
 public class Rook extends AbstractPiece {
